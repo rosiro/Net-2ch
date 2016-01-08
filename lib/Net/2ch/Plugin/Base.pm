@@ -19,18 +19,20 @@ sub new {
     $self;
 }
 
-sub encoding { 'shiftjis' }
+sub encoding { 'cp932' }
 
 sub gen_conf {
     my $self = shift;
     my $conf = shift;
-
+    #use Data::Printer;
     my $url = $conf->{url};
     my ($host, $bbs, $key);
     if ($url =~ m|^http://([\w\d]+)\.2ch\.net/test/read.cgi/([^/]+)/(\d+)/|i) {
 	($host, $bbs, $key) = ($1, $2, $3);
+	#print "1 ".$url."\n";
     } elsif ($url =~ m|^http://([\w\d]+)\.2ch\.net/([^/]+)/|i) {
 	($host, $bbs) = ($1, $2);
+	#print "2 ".$url." ".$host." ".$bbs."\n";
     } else {
 	die 'url format error.';
     }
@@ -126,6 +128,9 @@ sub parse_subject {
 	    resnum => $3,
 	});
     }
+    #use Data::Printer;
+    #    p $self;
+    #    p $data;
     return \@subject;
 }
 

@@ -1,6 +1,8 @@
 package Net::2ch::Subject;
 use strict;
-
+use utf8;
+use Data::Printer;
+use Encode;
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw( c url title noname image) );
 
@@ -23,13 +25,12 @@ sub new {
     $self->title($c->setting->{title});
     $self->noname($c->setting->{noname});
     $self->image($c->setting->{image});
-
+    p $self;
     $self;
 }
 
 sub load {
     my ($self) = @_;
-
     $self->{threads} = [];
     $self->{thread_by_key} = {};
     return 0 unless $self->c && $self->url;
@@ -37,7 +38,7 @@ sub load {
     my $cache = $self->c->cache->get($self->file);
     my $time = $cache->{time} || 0;
     my $res = $self->c->ua->diff_request($self->url, time => $time);
-
+    p $self;
     my $data;
     if (!$res->is_success) {
 	return 0 unless $res->code eq '304';
@@ -47,22 +48,22 @@ sub load {
     } else {
 	my $lasttime =  HTTP::Date::str2time($res->header('Last-Modified'));
 	$self->c->cache->set($self->file, {
-	    data => $res->content,
+	    data => decode("cp932",$res->content),
 	    time => $lasttime,
 	    fetch_time => time,
-	    url => $self->url,
-	    title => $self->title,
-	    noname => $self->noname,
-	    image => $self->image,
+	    url => decode("cp932",$self->url),
+	    title => decode("cp932",$self->title),
+	    noname => decode("cp932",$self->noname),
+	    image => decode("cp932",$self->image),
 	});
-	$data = $res->content;
+	$data = decode("cp932",$res->content);
     }
     my $subject = $self->c->worker->parse_subject($data);
     foreach (@{ $subject }) {
 	$_->{url} = $self->url;
-	$_->{bbstitle} = $self->title;
-	$_->{noname} = $self->noname;
-	$_->{image} = $self->image;
+	$_->{bbstitle} = decode("cp932",$self->title);
+	$_->{noname} = decode("cp932",$self->noname);
+	$_->{image} = decode("cp932",$self->image);
 	$self->add_thread( Net::2ch::Dat->new($self->c, $_) );
     }
     return 1;
@@ -76,6 +77,8 @@ sub add_thread {
 
 sub threads {
     my $self = shift;
+    #p $self;
+    #exit;
     wantarray ? @{ $self->{threads} } : $self->{threads};
 }
 

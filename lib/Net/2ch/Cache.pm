@@ -28,7 +28,7 @@ sub set {
 sub get {
     my ($self, $key) = @_;
     return +{} unless $self->{cache};
-
+    
     my $data = $self->{cache}->get($key);
     return +{} unless $data;
     thaw $data;

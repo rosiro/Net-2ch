@@ -1,6 +1,7 @@
 package Net::2ch::Dat;
 use strict;
-
+use Encode;
+use Data::Printer;
 use base qw( Class::Accessor::Fast );
 __PACKAGE__->mk_accessors( qw( c subject key title resnum dat ) );
 
@@ -64,7 +65,7 @@ sub parse {
     my ($self, $dat) = @_;
 
     return 0 unless $self->dat;
-    my $dat = $self->c->worker->parse_dat($self->dat);
+    my $dat = $self->c->worker->parse_dat(decode("cp932",$self->dat));
     my $i = 1;
     foreach (@{ $dat }) {
 	$_->{num} = $i++;

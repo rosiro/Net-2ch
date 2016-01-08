@@ -17,7 +17,7 @@ sub new {
 
 sub set {
     my ($self, $key, $data) = @_;
-
+    use Data::Printer;
     my $path = $self->{dir} . "/$key";
     my $dir = $path;
     $dir =~ s|/[^/]*$|/|;

@@ -25,7 +25,8 @@ sub new {
     $self->conf($self->worker->gen_conf(\%conf));
     $self->ua( Net::2ch::UserAgent->new($conf{ua}) );
     $self->cache( Net::2ch::Cache->new($conf{cache}) );
-
+    use Data::Printer;
+    p $self;
     $self;
 }
 
