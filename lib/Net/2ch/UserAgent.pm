@@ -12,7 +12,7 @@ sub new {
     my $self  = $class->SUPER::new();
     
     $ua = " ($ua)" if $ua;
-    $self->agent("Monazilla/1.00 Net::2ch/$Net::2ch::VERSION$ua");
+    $self->agent("Monazilla/$ua");
     $self->timeout(15);
     $self->max_redirect(0);
     $self;
