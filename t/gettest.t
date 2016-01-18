@@ -37,7 +37,7 @@ use Encode;
 # dat in cash is taken out
 {
     print "3____________________________________________________\n";
-    my $bbs = Net::2ch->new(url => 'http://anago.2ch.scnet/bake/',
+    my $bbs = Net::2ch->new(url => 'http://anago.2ch.sc/bake/',
 			    cache => '/tmp/net2ch-cache',
 			    plugin => '2chSC');
     my $dat = $bbs->recall_dat('1447007337');
@@ -46,7 +46,7 @@ use Encode;
 {
     print "4____________________________________________________\n";
     # parse dose dat from file
-    my $bbs = Net::2ch->new(url => 'http://hanabi.2ch.net/bake/',
+    my $bbs = Net::2ch->new(url => 'http://anago.2ch.sc/bake/',
 			    cache => '/tmp/net2ch-cache',
 			    plugin => '2chSC');
     open my $fh, "test.dat" or return;

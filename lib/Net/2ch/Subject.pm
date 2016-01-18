@@ -25,7 +25,6 @@ sub new {
     $self->title($c->setting->{title});
     $self->noname($c->setting->{noname});
     $self->image($c->setting->{image});
-    p $self;
     $self;
 }
 
@@ -38,7 +37,6 @@ sub load {
     my $cache = $self->c->cache->get($self->file);
     my $time = $cache->{time} || 0;
     my $res = $self->c->ua->diff_request($self->url, time => $time);
-    p $self;
     my $data;
     if (!$res->is_success) {
 	return 0 unless $res->code eq '304';
